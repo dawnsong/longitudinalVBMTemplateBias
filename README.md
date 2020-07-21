@@ -6,6 +6,10 @@ Though there have been discussions on the possible bias caused by different ways
 ## The rational behind the simulation
 For the registration, we assume the registration can do perfectly job though there is actually no manipulation of any linear/non-linear registration parameters. With only the manipulation of the intensity values, with different choice of template (subject-specific or age-specific), there will be different estimation results.
 
+## How to refernce this work:
+
+Xiaowei Song, Pamela Garcia, Nathan Kindred, Yujiang Wang, Hugo Merchant, Adrien Meguerditchian,  Yihong Yang, Elliot A. Stein, Charles W. Bradberry, Suliann Ben Hamed, Hank P. Jedema, Colline Poirier. "Strengths and challenges of longitudinal primate neuroimaging". Submitted to ...
+
 ## Code organization
 There are usually two stages in longitudinal VBM registration (Fig. 0). And it is critical to build/choose a template in the 1st stage. As shown in the simulation, there maybe bigger bias when choosing subject-specific template (Fig. 1, Fig. 2A,2B) 
 
