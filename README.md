@@ -26,6 +26,7 @@ Fig. 2A.
 Fig. 2B.
 
 
+### Note
 My script plRunCmd is in this dir and should be added to PATH env, pexec (parallel execution cmd) should also be installed. Note that plRunCmd is nothing but adding cmd history into resulted NIFTI file header, thus it can be ignored or deleted. It is included here just for reference.
 The code are organized in two folders and each reprsent a stage as the folder name.
 
