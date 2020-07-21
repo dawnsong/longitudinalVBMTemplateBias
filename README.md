@@ -17,6 +17,12 @@ To repeat the fig.2's result (only stage 1):
 Xiaowei Song
 version: Jul 21, 2020
 
+## Dependencies:
+1. AFNI [http://afni.nimh.nih.gov]
+2. FSL [ Andersson et al., 2017 ]
+3. FreeSurfer [Reuter et al., 2011; 2012]
+4. INIA-19 template [Rohlfing et al., 2012]
+
 ## Key References:
 1. Reuter, M., Fischl, B., 2011. Avoiding asymmetry-induced bias in longitudinal image processing. NeuroImage 57, 19–21. https://doi.org/10.1016/j.neuroimage.2011.02.076
 
