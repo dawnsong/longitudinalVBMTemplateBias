@@ -10,6 +10,7 @@ For the registration, we assume the registration can do perfectly job though the
 There are usually two stages in longitudinal VBM registration (Fig. 0). And it is critical to build/choose a template in the 1st stage. As shown in the simulation, there maybe bigger bias when choosing subject-specific template (Fig. 1, Fig. 2A,2B) 
 
 ![fig0-2stages](./figS1-colline-2-ways.png)
+Fig. 0. different combinations of templates for the 2 stages in longitudinal VBM
 
 ![fig1-stage1-nonlinearBias](./sim4aging_a0.1s0.1/cmpAgeSubjSpecificTemplate4diff2gt-wErrBars.png)
 Fig. 1
