@@ -1,7 +1,7 @@
 # Possible Template Bias In Longitudinal VBM studies for developmental studies
 ## Brief motivation
 In the cross-sectional studies, the template can be simply the population average. However, treating longitudinal scans as independent scans as in cross-sectional studies may smear the subtle changes along the time, which is essentially what longtitudinal studies care most about.
-Though there have been discussions on the possible bias caused by different ways of building a template in longitudinal studies [1,2,3], the template choice has not been studied yet, especially for brain developmental studies, and with non-linear registration involved 
+Though there have been discussions on the possible bias caused by different ways of building a template in longitudinal studies [Reuter et al., 2011, 2012; Ashburner and Ridgway 2013; Scott et al., 2016; Ball et al., 2019], the template choice has not been studied yet, especially for brain developmental studies, and with non-linear registration involved 
 
 ## The rational behind the simulation
 For the registration, we assume the registration can do perfectly job though there is actually no manipulation of any linear/non-linear registration parameters. With only the manipulation of the intensity values, with different choice of template (subject-specific or age-specific), there will be different estimation results.
