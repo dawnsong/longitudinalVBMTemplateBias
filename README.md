@@ -30,7 +30,7 @@ My script plRunCmd is in this dir and should be added to PATH env, pexec (parall
 The code are organized in two folders and each reprsent a stage as the folder name.
 
 ## How to run the code
-To repeat the fig.2's result: just follow the number of the script.
+To repeat the figures' results: just follow the number of the script.
 
 Xiaowei Song
 version: Jul 21, 2020
