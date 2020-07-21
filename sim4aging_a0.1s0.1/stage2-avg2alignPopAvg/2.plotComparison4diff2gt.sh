@@ -1,8 +1,8 @@
 #! /bin/bash
 #
-# dofnirt.sh
-#% Init: 2020-04-20 23:46
-#% Version: 2020-04-20 23:46
+# plotComparison.sh
+#% Init: 2020-04-23 01:32
+#% Version: 2020-04-23 01:32
 #% Copyright (C) 2020~2020 Xiaowei.Song <dawnwei.song@gmail.com>
 #% http://restfmri.net/dawnsong
 # Distributed under terms of the Academy Free License (AFL) license.
@@ -35,12 +35,32 @@ while [ $# -gt 0 ]; do
 done
 verbose=${VERBOSE:-0} ;  test 0 -ne $verbose && set -x
 
-in=$1
-ref=$2
-out=${3:-${in%%.*}-nl}
 
-export FSLOUTPUTTYPE=NIFTI_GZ
+matlabj <<eom
+m=dlmread('tAges-mean_diff2gt.log', '',1) %ignore 1st line, the header
+s=dlmread('tAges-sigma_diff2gt.log', '', 1)
+%set(groot, 'defaultLineLineWidth',2.0)
+set(groot, 'defaultErrorBarLineWidth',2.0)
+set(groot, 'defaultAxesFontSize', 14)
+hf=figure;  hold on
+%set(hf, 'DefaultLineLineWidth', 2)
+ha=gca;
+x1=1:size(m,1);
+x2=x1+0.1; 
+he1=errorbar(x1, m(:,1), s(:,1));
+he2=errorbar(x2, m(:,2), s(:,2));
 
-#fnirt --config=fnirt.inia19.conf --ref=subj0-mean.nii.gz --refmask=inia19-brainmsk.nii.gz --in=./subj0-t0.nii.gz --inmask=inia19-brainmsk.nii.gz --iout=subj0-t0-nl.nii.gz --cout=subj0-t0-nl_warp.field.nii.gz --jout=jac.subj0-t0-nl.nii.gz -v 2>&1 > fnirt.subj0-t0-nl.log &
-plRunCmd -f ${out}.nii.gz -- fnirt --config=fnirt.inia19.conf --ref=$ref --refmask=inia19-brainmsk.nii.gz --in=$in  --inmask=inia19-brainmsk.nii.gz --iout=${out}.nii.gz --cout=${out}_warp.field.nii.gz --jout=jac.${out}.nii.gz -v 2>&1 |tee fnirt.${out}.log
+%hl=plot(x1, diff(:,1), '-o', x1, diff(:,2), '-x')
+yline(0, '--', 'DisplayName', '')
 
+%ha.LineWidth=2;
+%hl(1).LineWidth=2;hl(2).LineWidth=2;
+he1.LineWidth=2; he2.LineWidth=2;% he3.LineWidth=2;
+%legend('Ground-truth', 'Age-specific Template', 'Subject-specific Template', 'Location', 'northwest')
+legend('Age-specific Template Estimation', 'Subject-specific Template Estimation', 'Location', 'northwest')
+legend boxoff
+xlabel('Pseudo-Ages')
+ylabel('GMD difference with ground-truth')
+ylim([-.25 .25])
+print -dpng cmpAgeSubjSpecificTemplate4diff2gt-wErrBars.png
+eom

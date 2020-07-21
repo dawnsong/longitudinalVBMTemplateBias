@@ -1,8 +1,8 @@
 #! /bin/bash
 #
-# dofnirt.sh
-#% Init: 2020-04-20 23:46
-#% Version: 2020-04-20 23:46
+# 0.mkAvg.sh
+#% Init: 2020-06-21 22:44
+#% Version: 2020-06-21 22:44
 #% Copyright (C) 2020~2020 Xiaowei.Song <dawnwei.song@gmail.com>
 #% http://restfmri.net/dawnsong
 # Distributed under terms of the Academy Free License (AFL) license.
@@ -35,12 +35,24 @@ while [ $# -gt 0 ]; do
 done
 verbose=${VERBOSE:-0} ;  test 0 -ne $verbose && set -x
 
-in=$1
-ref=$2
-out=${3:-${in%%.*}-nl}
-
 export FSLOUTPUTTYPE=NIFTI_GZ
 
-#fnirt --config=fnirt.inia19.conf --ref=subj0-mean.nii.gz --refmask=inia19-brainmsk.nii.gz --in=./subj0-t0.nii.gz --inmask=inia19-brainmsk.nii.gz --iout=subj0-t0-nl.nii.gz --cout=subj0-t0-nl_warp.field.nii.gz --jout=jac.subj0-t0-nl.nii.gz -v 2>&1 > fnirt.subj0-t0-nl.log &
-plRunCmd -f ${out}.nii.gz -- fnirt --config=fnirt.inia19.conf --ref=$ref --refmask=inia19-brainmsk.nii.gz --in=$in  --inmask=inia19-brainmsk.nii.gz --iout=${out}.nii.gz --cout=${out}_warp.field.nii.gz --jout=jac.${out}.nii.gz -v 2>&1 |tee fnirt.${out}.log
+#subj-specific template
+3dMean -overwrite -prefix mean4ageSpec.nii.gz ../subj?-t?-nl-ageSpec.nii.gz
+#exit
+#align averges to the population mean
+#for t in $(seq 0 5); do
+    #in=subj${s}-t${t}-nl-ageSpec.nii.gz
+    pexec -n 10 -p "$(seq 0 5)" -e t -c -R -- 'doflirt.sh ../t${t}-mean.nii.gz mean4ageSpec.nii.gz t${t}-mean2ageSpec'
+#done
 
+#apply all subjects aligned images another FNIRT/warping to the common space
+for t in $(seq 0 5); do
+    #in=subj${s}-t${t}-nl.nii.gz
+    #pexec -n 10 -p "$(seq 0 9)" -e i -c -R -- 'applywarp --ref=mean4ageSpec.nii.gz  --in=../subj${i}-t'${t}'-nl-ageSpec.nii.gz --out=subj${i}-t'${t}'-nl-ageSpec.nii.gz  --warp=t'${t}'-mean2ageSpec_warp.field.nii.gz'
+    pexec -n 10 -p "$(seq 0 9)" -e i -c -R -- 'applyxfm4D ../subj${i}-t'${t}'-nl-ageSpec.nii.gz mean4ageSpec.nii.gz  subj${i}-t'${t}'-nl-ageSpec.nii.gz  t'${t}'-mean2ageSpec.omat -singlematrix'
+done
+
+#age-specific template
+#3dMeat -prefix mean4subjSpec.nii ../subj?-t?-nl-ageSpec.nii.gz
+    #in=subj${s}-t${t}-nl-ageSpec.nii.gz

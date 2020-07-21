@@ -36,8 +36,9 @@ done
 verbose=${VERBOSE:-0} ;  test 0 -ne $verbose && set -x
 
 in=$1
+fin=$(basename $1)
 ref=$2
-out=${3:-${in%%.*}-nl}
+out=${3:-${fin%%.*}-${ref%%.*}}
 
 export FSLOUTPUTTYPE=NIFTI_GZ
 

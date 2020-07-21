@@ -1,0 +1,5 @@
+
+expect FLIRT output identity matrix, thus nothing will change even I put the result affine matrix into the NIFTI file header
+
+Xiaowei Song
+version: 20200721

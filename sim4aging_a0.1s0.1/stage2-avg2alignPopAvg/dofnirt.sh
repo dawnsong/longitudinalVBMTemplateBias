@@ -36,11 +36,12 @@ done
 verbose=${VERBOSE:-0} ;  test 0 -ne $verbose && set -x
 
 in=$1
+fin=$(basename $1)
 ref=$2
-out=${3:-${in%%.*}-nl}
+out=${3:-${fin%%.*}-${ref%%.*}}
 
 export FSLOUTPUTTYPE=NIFTI_GZ
 
-#fnirt --config=fnirt.inia19.conf --ref=subj0-mean.nii.gz --refmask=inia19-brainmsk.nii.gz --in=./subj0-t0.nii.gz --inmask=inia19-brainmsk.nii.gz --iout=subj0-t0-nl.nii.gz --cout=subj0-t0-nl_warp.field.nii.gz --jout=jac.subj0-t0-nl.nii.gz -v 2>&1 > fnirt.subj0-t0-nl.log &
+#fnirt --config=/home/songx4/dawn/bin/fnirt.inia19.conf --ref=subj0-mean.nii.gz --refmask=inia19-brainmsk.nii.gz --in=./subj0-t0.nii.gz --inmask=inia19-brainmsk.nii.gz --iout=subj0-t0-nl.nii.gz --cout=subj0-t0-nl_warp.field.nii.gz --jout=jac.subj0-t0-nl.nii.gz -v 2>&1 > fnirt.subj0-t0-nl.log &
 plRunCmd -f ${out}.nii.gz -- fnirt --config=fnirt.inia19.conf --ref=$ref --refmask=inia19-brainmsk.nii.gz --in=$in  --inmask=inia19-brainmsk.nii.gz --iout=${out}.nii.gz --cout=${out}_warp.field.nii.gz --jout=jac.${out}.nii.gz -v 2>&1 |tee fnirt.${out}.log
 

@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+#% Init: 2013-08-30 18:35
+#% Version: 20170426.11:59 Xiaowei Song
+#% Copyright (C) 2013~2020 Xiaowei.Song <dawnwei.song@gmail.com>
+#% http://restfmri.net
+#% Distributed under terms of the AFL (Academy Free license).
+
+test -z $DEBUG || echo $0 $@ 1>&2
+#source $(dawnbin)/slib.bash.sh
+NotNil(){ [[ ! -z "$1" && $(basename "$1") != nil ]] ; }
+IsFileExist(){ NotNil "$1" && [[  -f "${1%[*}" ]];  }
+IsFileLoadable(){  [[  1 -eq $(3dinfo -exists "$1") ]]; }
+
+done=/dev/null
+while [ $# -gt 0 ]; do
+case "$1" in
+    '-f'|'--done') done=$2 ; eval "shist[${#shist[@]}]='$(readlink -m $2)'"; shift 2 ;;
+    '-h') hist=$2 ; shift 2 ;; #get history
+    -r|--required-input) required_input=$2; shift 2;;
+    -ht|--history-to) eval "shist[${#shist[@]}]='$(readlink -m $2)'"; shift 2;; #save history
+    -ow|--overwrite) OVERWRITE=1; shift;;
+    --profile) DOPROFILE=1; shift ;;
+    --) shift; break;;
+    '-*') elog 'Unknown parameters'; exit 0 ;;
+*) break ;;
+esac
+done
+
+test ! -z $required_input && { IsFileLoadable $required_input || { elog "$required_input not loadable"; exit 1; }; }
+
+#only consider env and force delete
+IsFileExist $done && test 0 -lt ${OVERWRITE:-0} &&
+if [[ $OVERWRITE -eq 2 ]]; then 
+    mv -f ${done} ${done}.overwrite.`date +%Y%m%d.%H%M%S` ; 
+else
+    rm ${done}
+fi
+
+if [[ 1 -eq ${DOPROFILE:-0} ]]; then 
+    doProfile="$(dawnhome)/bin/time -v"
+fi
+
+###never use single quote in cmd line
+if  ! IsFileExist $done ; then 
+    #support multi-line commands seperated by ;
+    cmdf=$(getmp).sh
+    cmd="$@" ; #   shift
+    qcmd=${cmd##\'}  ; qcmd=${qcmd%%\'}  ;  #remove extra single quote added by bash
+    elog $qcmd #log command line
+    #echo $qcmd > $cmdf  ; sh $cmdf
+    test 0 -lt ${VERBOSE:-0} && opt_debug='-x'
+    cat > $cmdf <<eoc 
+#!/usr/bin/env bash $opt_debug
+$qcmd
+eoc
+    ${doProfile} sh $cmdf
+    test -z $DEBUG && rm $cmdf || elog $cmdf
+
+    #while [ $# -ge 1 ]; do 
+        #nii=$1 ; shift
+    #allow saving one file history to many files'
+    for i in $(seq 1 ${#shist[@]}); do 
+        let ii=i-1
+        nii=${shist[$ii]}
+        IsFileLoadable $nii ||  continue
+        IsFileExist $hist && 3dNotes -a "$(3dNotes $hist|sed -e '1,/HISTORY/d')" $nii
+        3dNotes -h "$cmd" $nii
+    done
+fi

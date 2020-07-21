@@ -1,14 +1,19 @@
-# Template Bias In Longitudinal VBM studies
+# Possible Template Bias In Longitudinal VBM studies for developmental studies
 ## Brief motivation
 In the cross-sectional studies, the template can be simply the population average. However, treating longitudinal scans as independent scans as in cross-sectional studies may smear the subtle changes along the time, which is essentially what longtitudinal studies care most about.
-Though there have been discussions on the possible bias caused by different ways of building a template in longitudinal studies [1,2,3], the template choice has not been studied yet, especially for brain developmental studies 
+Though there have been discussions on the possible bias caused by different ways of building a template in longitudinal studies [1,2,3], the template choice has not been studied yet, especially for brain developmental studies, and with non-linear registration involved 
 
 ## The rational behind the simulation
-For the alignment, we assume the alignment can do perfectly job though there is actually no manipulation of any linear/non-linear alignment parameters. With only the manipulation of the intensity values, with different choice of template (subject-specific or age-specific), there will be different estimation results.
+For the registration, we assume the registration can do perfectly job though there is actually no manipulation of any linear/non-linear registration parameters. With only the manipulation of the intensity values, with different choice of template (subject-specific or age-specific), there will be different estimation results.
 
 ## Code organization
-There are usually two stages in longitudinal VBM alignment (Fig. 1). And it is critical to build/choose a template in the 1st stage. As shown in the simulation, there maybe bigger bias when choosing subject-specific template (Fig. 2) 
+There are usually two stages in longitudinal VBM registration (Fig. 1). And it is critical to build/choose a template in the 1st stage. As shown in the simulation, there maybe bigger bias when choosing subject-specific template (Fig. 2A,2B) 
 
+![fig1-stage1-nonlinearBias](./sim4aging_a0.1s0.1/cmpAgeSubjSpecificTemplate4diff2gt-wErrBars.png)
+![fig2a-stage2](./sim4aging_a0.1s0.1/stage2-FLIRTavg2popAvg/2ndStage-optionA-cmpAgeSubjSpecificTemplate4diff2gt-wErrBars.png)
+![fig2b-stage2](./sim4aging_a0.1s0.1/stage2-avg2alignPopAvg/2ndStage-optionB-cmpAgeSubjSpecificTemplate4diff2gt-wErrBars.png)
+
+My script plRunCmd is in this dir and should be added to PATH env, pexec (parallel execution cmd) should also be installed. Note that plRunCmd is nothing but adding cmd history into resulted NIFTI file header, thus it can be ignored or deleted. It is included here just for reference.
 The code are organized in two folders and each reprsent a stage as the folder name.
 
 ## How to run the code

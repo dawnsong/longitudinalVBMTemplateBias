@@ -1,8 +1,8 @@
 #! /bin/bash
 #
-# dofnirt.sh
-#% Init: 2020-04-20 23:46
-#% Version: 2020-04-20 23:46
+# 0.mkAvg.sh
+#% Init: 2020-06-21 22:44
+#% Version: 2020-06-21 22:44
 #% Copyright (C) 2020~2020 Xiaowei.Song <dawnwei.song@gmail.com>
 #% http://restfmri.net/dawnsong
 # Distributed under terms of the Academy Free License (AFL) license.
@@ -35,12 +35,22 @@ while [ $# -gt 0 ]; do
 done
 verbose=${VERBOSE:-0} ;  test 0 -ne $verbose && set -x
 
-in=$1
-ref=$2
-out=${3:-${in%%.*}-nl}
-
 export FSLOUTPUTTYPE=NIFTI_GZ
 
-#fnirt --config=fnirt.inia19.conf --ref=subj0-mean.nii.gz --refmask=inia19-brainmsk.nii.gz --in=./subj0-t0.nii.gz --inmask=inia19-brainmsk.nii.gz --iout=subj0-t0-nl.nii.gz --cout=subj0-t0-nl_warp.field.nii.gz --jout=jac.subj0-t0-nl.nii.gz -v 2>&1 > fnirt.subj0-t0-nl.log &
-plRunCmd -f ${out}.nii.gz -- fnirt --config=fnirt.inia19.conf --ref=$ref --refmask=inia19-brainmsk.nii.gz --in=$in  --inmask=inia19-brainmsk.nii.gz --iout=${out}.nii.gz --cout=${out}_warp.field.nii.gz --jout=jac.${out}.nii.gz -v 2>&1 |tee fnirt.${out}.log
+#subj-specific template
+3dMean -overwrite -prefix mean4subjSpec.nii.gz ../subj?-t?-nl.nii.gz
+#for t in $(seq 0 5); do
+    #in=subj${s}-t${t}-nl.nii.gz
+    #pexec -n 10 -p "$(seq 0 9)" -e i -c -R -- 'dofnirt.sh ../subj${i}-t'${t}'-nl.nii.gz mean4subjSpec.nii.gz'
+    pexec -n 10 -p "$(seq 0 9)" -e i -c -R -- 'dofnirt.sh ../subj${i}-mean.nii.gz mean4subjSpec.nii.gz subj${i}-mean2subjSpec'
+#done
 
+#apply all subjects aligned images another FNIRT/warping to the common space
+for t in $(seq 0 5); do
+    #in=subj${s}-t${t}-nl.nii.gz
+    pexec -n 10 -p "$(seq 0 9)" -e i -c -R -- 'applywarp --ref=mean4subjSpec.nii.gz  --in=../subj${i}-t'${t}'-nl.nii.gz --out=subj${i}-t'${t}'-nl.nii.gz  --warp=subj${i}-mean2subjSpec_warp.field.nii.gz'
+done
+
+#age-specific template
+#3dMeat -prefix mean4subjSpec.nii ../subj?-t?-nl-ageSpec.nii.gz
+    #in=subj${s}-t${t}-nl-ageSpec.nii.gz
