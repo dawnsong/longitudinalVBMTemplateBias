@@ -6,7 +6,7 @@ Though there have been discussions on the possible bias caused by different ways
 ## The rational behind the simulation
 For the registration, we assume the registration can do perfectly job though there is actually no manipulation of any linear/non-linear registration parameters. With only the manipulation of the intensity values, with different choice of template (subject-specific or age-specific), there will be different estimation results.
 
-## How to refernce this work:
+## How to reference this work:
 
 Xiaowei Song, Pamela Garcia, Nathan Kindred, Yujiang Wang, Hugo Merchant, Adrien Meguerditchian,  Yihong Yang, Elliot A. Stein, Charles W. Bradberry, Suliann Ben Hamed, Hank P. Jedema, Colline Poirier. "Strengths and challenges of longitudinal primate neuroimaging". Submitted to ...
 
