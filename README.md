@@ -41,6 +41,7 @@ version: Jul 21, 2020
 2. FSL [ Andersson et al., 2017 ]
 3. FreeSurfer [Reuter et al., 2011; 2012]
 4. INIA-19 template [Rohlfing et al., 2012]
+5. Liu & Liang (1997) power simulation package by Dr. Michael C. Donohue (mdonohue@usc.edu): https://github.com/mcdonohue/longpower .
 
 ## Key References:
 1. Reuter, M., Fischl, B., 2011. Avoiding asymmetry-induced bias in longitudinal image processing. NeuroImage 57, 19–21. https://doi.org/10.1016/j.neuroimage.2011.02.076
@@ -57,3 +58,6 @@ version: Jul 21, 2020
 
 7. Ball, G., Seal, M.L., 2019. Individual variation in longitudinal postnatal development of the primate brain. Brain Struct Funct 224, 1185–1201. https://doi.org/10.1007/s00429-019-01829-5
 
+8. Liu, G., & Liang, K. Y. (1997). Sample size calculations for studies with correlated observations. Biometrics, 53(3), 937-47.
+
+9. Michael C. Donohue.  https://cran.r-project.org/web/packages/longpower/index.html
