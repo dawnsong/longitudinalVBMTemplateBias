@@ -56,10 +56,10 @@ plt<-ggplot(data=m, aes(y=EstimatedPower, x=nSessions, color=Type, shape=nSubjec
 plt<-plt + theme_bw() +theme(text=element_text(size=20), legend.position = c(.8,0.25), legend.key.width = unit(4, "line")) # +scale_color_viridis(discrete = TRUE)
 
 #plt<-plt + ylab("Required sample size") +xlab("Effect size (Cohen's d)")
-plt<-plt + xlab("Number of sessions") +ylab("Estimated power") 
+plt<-plt + xlab("Number of longitudinal sessions or cross-sectional samplings") +ylab("Estimated power") 
 #plt<-plt + labs(title = "Sample size are bigger for unpaired two-sample T-test" ) #sprintf("Power=%g", power4test))
-plt<-plt + labs(title = "Cross-sectional is less powered than longitudinal, with Cohen's d as 0.75" , linetype="Total Subjects") #sprintf("Power=%g", power4test))
+#plt<-plt + labs(title = "Cross-sectional is less powered than longitudinal, with Cohen's d as 0.75" , linetype="Total Subjects") #sprintf("Power=%g", power4test))
 plt<-plt + scale_linetype_manual(values=c("dotted","dashed","solid")) #solid, dotdash, dotted, or (1,4,3)
 #plt<-plt + xlim(0,500)
-ggsave(sprintf("power4crossLongitudinalComparision-CohenD%g.png", delta), plt, width=12, height=7)
+ggsave(sprintf("power4crossLongitudinalComparision-CohenD%g.png", delta), plt, width=12, height=7, dpi=300)
 plt
